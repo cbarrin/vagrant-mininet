@@ -1,5 +1,3 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
 
 $init = <<SCRIPT
   sudo aptitude update
@@ -36,15 +34,6 @@ $ryu = <<SCRIPT
   git clone https://github.com/osrg/ryu # Demo apps and stuff
 SCRIPT
 
-$trema = <<SCRIPT
-  DEBIAN_FRONTEND=noninteractive sudo aptitude install -y gcc make libpcap-dev libssl-dev ruby2.1 ruby2.1-dev
-  sudo gem install bundler
-  git clone git://github.com/trema/trema trema
-  pushd trema
-  bundle install
-  rake
-  popd
-SCRIPT
 
 $odl = <<SCRIPT
   wget https://nexus.opendaylight.org/content/groups/public/org/opendaylight/integration/distribution-karaf/0.3.1-Lithium-SR1/distribution-karaf-0.3.1-Lithium-SR1.tar.gz
@@ -65,7 +54,7 @@ $cleanup = <<SCRIPT
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/vivid64"
+  config.vm.box = "ubuntu/wily64"
 
   config.vm.provider "virtualbox" do |v|
       v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
@@ -73,9 +62,9 @@ Vagrant.configure("2") do |config|
   end
 
   ## Guest config
-  config.vm.hostname = "sdnlab"
+  config.vm.hostname = "mininet"
   # config.vm.network :private_network, ip: "192.168.0.100"
-  config.vm.network :forwarded_port, guest:6633, host:6633 # OpenFlow
+  config.vm.network :forwarded_port, guest:6653, host:6653 # OpenFlow
   config.vm.network :forwarded_port, guest:8181, host:8181 # Web UI
   config.vm.network :forwarded_port, guest:8080, host:8080 # ODL REST API
 
@@ -84,9 +73,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, privileged: false, :inline => $ovs
   config.vm.provision :shell, privileged: false, :inline => $mininet
   config.vm.provision :shell, privileged: false, :inline => $ryu
-  config.vm.provision :shell, privileged: false, :inline => $odl
-  config.vm.provision :shell, privileged: false, :inline => $onos
-  config.vm.provision :shell, privileged: false, :inline => $trema
+  #config.vm.provision :shell, privileged: false, :inline => $odl
+  #config.vm.provision :shell, privileged: false, :inline => $onos
   config.vm.provision :shell, :inline => $cleanup
 
   ## SSH config
