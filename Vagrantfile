@@ -28,6 +28,16 @@ $mininet = <<SCRIPT
   popd
 SCRIPT
 
+$mininext = <<SCRIPT
+  # Install MiniNExT
+  sudo apt-get install -y help2man python-setuptools
+
+  git clone https://github.com/USC-NSL/miniNExT.git miniNExT/
+  cd miniNExT
+  git checkout 1.4.0
+  sudo make install
+SCRIPT
+
 $ryu = <<SCRIPT
   DEBIAN_FRONTEND=noninteractive sudo aptitude install -y python-lxml python-pbr python-greenlet
   sudo pip install six==1.9.0 networkx ryu
@@ -72,7 +82,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, privileged: false, :inline => $init
   config.vm.provision :shell, privileged: false, :inline => $ovs
   config.vm.provision :shell, privileged: false, :inline => $mininet
-  config.vm.provision :shell, privileged: false, :inline => $ryu
+  config.vm.provision :shell, privileged: false, :inline => $mininext
+  #config.vm.provision :shell, privileged: false, :inline => $ryu
   #config.vm.provision :shell, privileged: false, :inline => $odl
   #config.vm.provision :shell, privileged: false, :inline => $onos
   config.vm.provision :shell, :inline => $cleanup
