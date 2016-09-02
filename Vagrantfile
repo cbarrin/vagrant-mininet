@@ -3,8 +3,11 @@ $init = <<SCRIPT
   sudo aptitude update
   sudo DEBIAN_FRONTEND=noninteractive aptitude install -y build-essential fakeroot debhelper autoconf automake libssl-dev graphviz \
    python-all python-qt4 python-twisted-conch libtool git tmux vim python-pip python-paramiko \
-   python-sphinx oracle-java8-installer
+   python-sphinx oracle-java8-installer ant
   sudo pip install alabaster
+  sudo pip install requests
+  sudo pip install jprops
+  sudo pip install pytest
   sudo aptitude install -y openjdk-8-jdk
   echo 'export JAVA_HOME="/usr/lib/jvm/default-java"' >> ~/.profile
   source ~/.profile
@@ -36,6 +39,19 @@ $mininext = <<SCRIPT
   cd miniNExT
   git checkout 1.4.0
   sudo make install
+SCRIPT
+
+$quagga = <<SCRIPT
+  # Install Quagga
+  sudo apt-get install -y quagga
+SCRIPT
+
+$floodlight = <<SCRIPT
+ # Install Floodlight
+ git clone git://github.com/floodlight/floodlight
+ pushd floodlight
+ sudo ant
+ popd
 SCRIPT
 
 $ryu = <<SCRIPT
@@ -83,6 +99,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, privileged: false, :inline => $ovs
   config.vm.provision :shell, privileged: false, :inline => $mininet
   config.vm.provision :shell, privileged: false, :inline => $mininext
+  config.vm.provision :shell, privileged: false, :inline => $quagga
+  config.vm.provision :shell, privileged: false, :inline => $floodlight
   #config.vm.provision :shell, privileged: false, :inline => $ryu
   #config.vm.provision :shell, privileged: false, :inline => $odl
   #config.vm.provision :shell, privileged: false, :inline => $onos

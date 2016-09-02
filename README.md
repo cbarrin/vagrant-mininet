@@ -1,18 +1,20 @@
 # vagrant-mininet
 
 This Vagrantfile tries to be an all-inclusive script to provide an
-OpenFlow 1.3 playground in a VM.
+OpenFlow 1.3 and Floodlight testing environment in a VM. Difficult
+to install tools such as Mininet and OVS are packaged in.
 
 Tools included:
 
 - Mininet 2.1.0
+- MiniNExT 1.4.0
 - OpenVSwitch 2.3.0
-- Ryu
-- Trema Edge
+- Quagga
+- Floodlight
 
 ## Usage
 
-Start with installation of VirtualBox and Vagrant. Next, download the
+Start with the installation of VirtualBox and Vagrant. Next, download the
 Vagrantfile and run `vagrant up` from the folder it is stored in.
 
 After the script finishes its job, `vagrant ssh` from the corresponding folder
