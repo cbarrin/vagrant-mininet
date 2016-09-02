@@ -89,10 +89,13 @@ Vagrant.configure("2") do |config|
 
   ## Guest config
   config.vm.hostname = "mininet"
-  # config.vm.network :private_network, ip: "192.168.0.100"
+  config.vm.network :private_network, ip: "192.168.0.200"
+  config.vm.network :forwarded_port, guest:6009, host:6009 # FL port
+  config.vm.network :forwarded_port, guest:6642, host:6642 # FL port
+  config.vm.network :forwarded_port, guest:6643, host:6643 # FL port
   config.vm.network :forwarded_port, guest:6653, host:6653 # OpenFlow
-  config.vm.network :forwarded_port, guest:8181, host:8181 # Web UI
-  config.vm.network :forwarded_port, guest:8080, host:8080 # ODL REST API
+  config.vm.network :forwarded_port, guest:8081, host:8081 # FL port
+  config.vm.network :forwarded_port, guest:8080, host:8080 # FL REST API
 
   ## Provisioning
   config.vm.provision :shell, privileged: false, :inline => $init
